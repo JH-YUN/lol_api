@@ -22,6 +22,25 @@ app.get('/champion/:championId', (req, res) => {
   return res.json(data);
 });
 
+/**
+ * data dragon 버전 체크
+ */
+app.get('/ddver', (req, res) => {
+  const remoteVersion = JSON.parse(fs.readFileSync('https://ddragon.leagueoflegends.com/realms/na.json', 'utf-8'));
+  const cdnUrl = remoteVersion.cdn;
+  const remoteddVersion = remoteVersion.dd;
+  const localVersion = JSON.parse(fs.readFileSync(path.join(dataPath, 'manifest.json')));
+  const localddVersion = localVersion.dd;
+
+  if(localVersion == remoteVersion) {
+    return res.json({needUpdate: false});
+  }
+  else {
+    return res.json({needUpdate: true});
+  }
+
+})
+
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
