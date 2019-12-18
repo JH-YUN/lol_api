@@ -2,6 +2,7 @@ const express = require('express');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
+const https = require('https');
 
 const app = express();
 const dataPath = path.join(__dirname, '/../','testdata');
@@ -27,6 +28,9 @@ app.get('/champion/:championId', (req, res) => {
  */
 app.get('/ddver', (req, res) => {
   const remoteVersion = JSON.parse(fs.readFileSync('https://ddragon.leagueoflegends.com/realms/na.json', 'utf-8'));
+  https.request('https://ddragon.leagueoflegends.com/realms/na.json', (req, res) => {
+
+  })
   const cdnUrl = remoteVersion.cdn;
   const remoteddVersion = remoteVersion.dd;
   const localVersion = JSON.parse(fs.readFileSync(path.join(dataPath, 'manifest.json')));
